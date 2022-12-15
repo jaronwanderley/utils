@@ -1,0 +1,81 @@
+{
+  "name": "@jrnwn/utils",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "A set of Tiny utilities Functions to simple use.",
+  "author": "Jaron Wanderley",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build:main": "tsc && vite build",
+    "build:packages": "node build.js",
+    "build": "npm run build:main && npm run build:packages",
+    "preview": "vite preview",
+    "test": "vitest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/utils.umd.cjs",
+      "import": "./dist/utils.js"
+    },
+    "./array": {
+      "require": "./dist/array.umd.cjs",
+      "import": "./dist/array.js"
+    },
+    "./dom": {
+      "require": "./dist/dom.umd.cjs",
+      "import": "./dist/dom.js"
+    },
+    "./geometry": {
+      "require": "./dist/geometry.umd.cjs",
+      "import": "./dist/geometry.js"
+    },
+    "./http": {
+      "require": "./dist/http.umd.cjs",
+      "import": "./dist/http.js"
+    },
+    "./math": {
+      "require": "./dist/math.umd.cjs",
+      "import": "./dist/math.js"
+    },
+    "./object": {
+      "require": "./dist/object.umd.cjs",
+      "import": "./dist/obect.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaronwanderley/utils.git"
+  },
+  "keywords": [
+    "utils",
+    "array",
+    "dom",
+    "geometry",
+    "http",
+    "math",
+    "object"    
+  ],
+  "main": "./dist/utils.umd.cjs",
+  "module": "./dist/utils.js",
+  "unpkg": "./dist/utils.iife.js",
+  "jsdelivr": "./dist/utils.iife.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.33.1",
+    "@types/jest": "^29.2.4",
+    "@types/node": "^18.11.11",
+    "@vitest/coverage-c8": "^0.25.5",
+    "eslint": "^8.29.0",
+    "terser": "^5.16.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3",
+    "vite-plugin-dts": "^1.7.1",
+    "vitest": "^0.25.5"
+  }
+}
