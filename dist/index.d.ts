@@ -1,5 +1,5 @@
-export declare const loadText: (path: string) => Promise<string>;
-export declare const loadJson: (path: string) => Promise<any>;
+export declare const range: (start?: number, end?: number, step?: number) => number[];
+e: string) => HTMLElement;
 export declare const setClass: (element: HTMLElement, className: string) => void[];
 export declare const removeClass: (element: HTMLElement, className: string) => void[];
 export declare const setStyle: (element: HTMLElement, object: Object) => any[];

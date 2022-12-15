@@ -207,7 +207,7 @@ const {
 ```javascript
 function get (path: string, obj?: Window | Object) => any
 function set (path: string, object: Object | Window | undefined, value: any) => any
-function getListOfPaths (obj?: {}) => any
+function getListOfPaths (obj?: object) => any
 ```
 
 </details>

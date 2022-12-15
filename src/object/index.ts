@@ -13,7 +13,7 @@ export const set = (path: string, object: Window | Object = window, value: any) 
   }, object)
 }
 
-export const getListOfPaths = (obj = {}) => {
+export const getListOfPaths = (obj: object = {}) => {
   const addDelimiter = (a: string, b: string) => a ? `${a}.${b}` : b
   const paths = (obj: Object = {}, head = ''): any => {
     return Object.entries(obj)
