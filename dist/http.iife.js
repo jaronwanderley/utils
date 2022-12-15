@@ -1,0 +1,1 @@
+var Http=function(t){"use strict";return t.loadJson=async t=>{try{const e=await fetch(t);return await e.json()}catch(e){return""}},t.loadText=async t=>{try{const e=await fetch(t);return await e.text()}catch(e){return""}},Object.defineProperties(t,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),t}({});

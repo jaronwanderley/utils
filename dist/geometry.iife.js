@@ -1,0 +1,1 @@
+var Geometry=function(e){"use strict";return e.getDistance=(e,t)=>{const r=t.x-e.x,n=t.y-e.y;return Math.sqrt(r*r+n*n)},Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});
