@@ -10,13 +10,13 @@ Object.defineProperty(global.document, 'cookie', {
   value: 'foo=omnomnom',
 })
 
-describe('Testes para funções de cookies', () => {
-  it('Setar e obter um cookie', () => {
+describe('Tests for cookie functions', () => {
+  it('Set and get a cookie', () => {
     setCookie('foo', 'bar', 1)
     expect(getCookie('foo')).toBe('bar')
   })
 
-  it('Deletar um cookie', () => {
+  it('Delete a cookie', () => {
     setCookie('foo', 'bar', 1)
     deleteCookie('foo')
     expect(getCookie('foo')).toBe('')
