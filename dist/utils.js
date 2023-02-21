@@ -1,177 +1,110 @@
-const range = (start = 0, end = 0, step = 1) => Array(Math.floor((end - start) / step + 1)).fill(0).map((_, index) => step * index + start);
-const clonedDate = (date) => new Date(date.getTime());
-const addDaysTo = (date, days = 0) => {
-  const newDate = clonedDate(date);
-  newDate.setDate(date.getDate() + days);
-  return newDate;
-};
-const fromToday = (days) => {
-  const today = new Date();
-  today.setDate(today.getDate() + days);
-  return today;
-};
-const firstDayOfWeek = (date) => addDaysTo(date, -date.getDay());
-const firstDayOfMonth = (date) => addDaysTo(date, -date.getDate() + 1);
-const daysFrom = (date, days = 1) => Array(days).fill(0).map((_, i) => addDaysTo(clonedDate(date), i));
-const monthDays = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-const getWeek = (date) => daysFrom(firstDayOfWeek(date), 7);
-const getMonth = (date) => daysFrom(firstDayOfMonth(date), monthDays(date));
-const getCookie = (name) => document.cookie.split(";").map((pair) => pair.trim().split("=")).find(([key]) => key === name)?.[1];
-const setCookie = (name, value, expireDays) => {
-  document.cookie = `${name}=${value};${expireDays && ` expires=${fromToday(expireDays).toUTCString()};`}`;
-};
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; expires=${fromToday(-9).toUTCString()};`;
-};
-const typeOf = (element) => typeof element == "object" && element != null ? element.constructor.name : {}.toString?.call(element)?.match(/\s(\w+)/)?.[1];
-const createEl = (type) => document.createElement(type);
-const setClass = (element, className) => className.split(" ").map((name) => element.classList.add(name));
-const removeClass = (element, className) => className.split(" ").map((name) => element.classList.remove(name));
-const setStyle = (element, object) => Object.entries(object).map(([key, value]) => element.style[key] = value);
-const getSelector = (element) => {
+const A = (t = 0, e = 0, o = 1) => Array(Math.floor((e - t) / o + 1)).fill(0).map((n, s) => o * s + t), y = (t) => new Date(t.getTime()), p = (t, e = 0) => {
+  const o = y(t);
+  return o.setDate(t.getDate() + e), o;
+}, h = (t) => {
+  const e = new Date();
+  return e.setDate(e.getDate() + t), e;
+}, $ = (t) => p(t, -t.getDay()), k = (t) => p(t, -t.getDate() + 1), D = (t, e = 1) => Array(e).fill(0).map((o, n) => p(y(t), n)), C = (t) => new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate(), F = (t) => D($(t), 7), L = (t) => D(k(t), C(t)), B = (t) => document.cookie.split(";").map((e) => e.trim().split("=")).find(([e]) => e === t)?.[1], E = (t, e, o) => {
+  document.cookie = `${t}=${e};${o && ` expires=${h(o).toUTCString()};`}`;
+}, N = (t) => {
+  document.cookie = `${t}=; expires=${h(-9).toUTCString()};`;
+}, M = (t) => typeof t == "object" && t != null ? t.constructor.name : {}.toString?.call(t)?.match(/\s(\w+)/)?.[1], z = (t) => document.createElement(t), I = (t, e) => e.split(" ").map((o) => t.classList.add(o)), U = (t, e) => e.split(" ").map((o) => t.classList.remove(o)), q = (t, e) => Object.entries(e).map(([o, n]) => t.style[o] = n), O = (t) => {
   const {
-    tagName,
-    id,
-    parentNode
-  } = element;
-  const bodyTag = "BODY";
-  if (tagName === bodyTag)
-    return bodyTag;
-  if (id)
-    return `#${id}`;
-  let childIndex = 1;
-  for (let el = element; el.previousElementSibling; el = el.previousElementSibling)
-    childIndex++;
-  return `${getSelector(parentNode)}>${tagName}:nth-child(${childIndex})`.toLowerCase();
-};
-const platform = () => {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    tagName: e,
+    id: o,
+    parentNode: n
+  } = t, s = "BODY";
+  if (e === s)
+    return s;
+  if (o)
+    return `#${o}`;
+  let r = 1;
+  for (let c = t; c.previousElementSibling; c = c.previousElementSibling)
+    r++;
+  return `${O(n)}>${e}:nth-child(${r})`.toLowerCase();
+}, W = () => {
+  const t = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent), e = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   return {
-    isMobile,
-    isDesktop: !isMobile,
-    isDark,
-    isLight: !isDark
+    isMobile: t,
+    isDesktop: !t,
+    isDark: e,
+    isLight: !e
   };
-};
-const normalizeText = (text) => text.normalize("NFD").replace(/[\u0300-\u036F]/g, "");
-const toSplit = (text) => text.replace(/[A-Z]/g, (char) => `_${char}`).replace(/[^\p{L}]/gu, "_").split("_").filter((e) => e);
-const baseFormat = (text) => toSplit(normalizeText(text)).map((word) => word.toLowerCase()).join("_");
-const joinFormat = (text, useStart = false) => (useStart ? "_" : "") + baseFormat(text).replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase());
-const toCamel = (text) => joinFormat(text);
-const toPascal = (text) => joinFormat(text, true);
-const toSnake = (text) => baseFormat(text);
-const toKebab = (text) => baseFormat(text).replaceAll("_", "-");
-const toProperName = (text) => toSplit(text).map((word) => word[0]?.toUpperCase() + word.slice(1)).join(" ");
-const getDistance = (p1, p2) => {
-  const x = p2.x - p1.x;
-  const y = p2.y - p1.y;
-  return Math.sqrt(x * x + y * y);
-};
-const loadText = async (path) => {
+}, x = (t) => t.normalize("NFD").replace(/[\u0300-\u036F]/g, ""), w = (t) => t.replace(/[A-Z]/g, (e) => `_${e}`).replace(/[^\p{L}]/gu, "_").split("_").filter((e) => e), u = (t) => w(x(t)).map((e) => e.toLowerCase()).join("_"), b = (t, e = !1) => (e ? "_" : "") + u(t).replace(/[^a-zA-Z0-9]+(.)/g, (o, n) => n.toUpperCase()), Y = (t) => b(t), Z = (t) => b(t, !0), J = (t) => u(t), K = (t) => u(t).replaceAll("_", "-"), R = (t) => w(t).map((e) => e[0]?.toUpperCase() + e.slice(1)).join(" "), v = (t, e) => {
+  const o = e.x - t.x, n = e.y - t.y;
+  return Math.sqrt(o * o + n * n);
+}, G = async (t) => {
   try {
-    const result = await fetch(path);
-    return await result.text();
-  } catch (error) {
+    return await (await fetch(t)).text();
+  } catch {
     return "";
   }
-};
-const loadJson = async (path) => {
+}, H = async (t) => {
   try {
-    const result = await fetch(path);
-    return await result.json();
-  } catch (error) {
+    return await (await fetch(t)).json();
+  } catch {
     return "";
   }
-};
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-const get = (path, obj = window) => path.split(/[\.\[\]]+/).filter((e) => e !== "").reduce((prev, curr) => prev ? prev[parseInt(curr) ? parseInt(curr) : curr] : null, obj || self);
-const set = (path, object = window, value) => {
-  const parts = path.split(/[\]\[.]/).filter((string) => !!string);
-  return parts.reduce((previous, current, index, array) => {
-    if (index + 1 === parts.length)
-      return previous[current] = value;
-    return previous[current] = previous[current] ? previous[current] : !isNaN(parseFloat(array[index + 1])) ? [] : {};
-  }, object);
-};
-const getListOfPaths = (obj = {}) => {
-  const addDelimiter = (a, b) => a ? `${a}.${b}` : b;
-  const paths = (obj2 = {}, head = "") => {
-    return Object.entries(obj2).reduce((result, [key, value]) => {
-      const fullPath = addDelimiter(head, key);
-      return typeOf(value) === "Object" ? result.concat(paths(value, fullPath)) : result.concat(fullPath);
-    }, []);
-  };
-  return paths(obj);
-};
-const tinyIDB = () => {
-  const myStore = "myStore";
-  const readwrite = "readwrite";
-  const on = "on";
-  const onSuccess = `${on}success`;
-  const error = "error";
-  const onError = on + error;
-  const result = "result";
-  const loadingDB = indexedDB.open(location.origin);
-  const use = (method, type, ...rest) => new Promise((resolve, reject) => {
-    loadingDB[onSuccess] = () => {
-      const database = loadingDB[result];
-      const transaction = database.transaction(myStore, type);
-      const store = transaction.objectStore(myStore);
-      const useRequest = store[method](...rest);
-      useRequest[onSuccess] = () => method === "get" ? resolve(useRequest[result]) : resolve();
-      useRequest[onError] = () => reject(useRequest[error]);
-    };
-    loadingDB[onError] = () => reject(loadingDB[error]);
+}, Q = (t, e, o) => Math.min(Math.max(t, e), o), V = (t, e = window) => t.split(/[\.\[\]]+/).filter((o) => o !== "").reduce((o, n) => o ? o[parseInt(n) ? parseInt(n) : n] : null, e || self), X = (t, e = window, o) => {
+  const n = t.split(/[\]\[.]/).filter((s) => !!s);
+  return n.reduce((s, r, c, a) => c + 1 === n.length ? s[r] = o : s[r] = s[r] ? s[r] : isNaN(parseFloat(a[c + 1])) ? {} : [], e);
+}, tt = (t = {}) => {
+  const e = (n, s) => n ? `${n}.${s}` : s, o = (n = {}, s = "") => Object.entries(n).reduce((r, [c, a]) => {
+    const l = e(s, c);
+    return M(a) === "Object" ? r.concat(o(a, l)) : r.concat(l);
+  }, []);
+  return o(t);
+}, et = () => {
+  const t = "myStore", e = "readwrite", o = "on", n = `${o}success`, s = "error", r = o + s, c = "result", a = indexedDB.open(location.origin), l = (i, d, ...S) => new Promise((g, f) => {
+    a[n] = () => {
+      const m = a[c].transaction(t, d).objectStore(t)[i](...S);
+      m[n] = () => i === "get" ? g(m[c]) : g(), m[r] = () => f(m[s]);
+    }, a[r] = () => f(a[s]);
   });
-  const initialize = () => new Promise((resolve, reject) => {
-    loadingDB.onupgradeneeded = () => {
-      loadingDB[result].createObjectStore(myStore);
-      resolve();
-    };
-    loadingDB[onError] = () => reject(loadingDB[error]);
-  });
-  initialize();
-  return {
-    get: (key) => use("get", "readonly", key),
-    set: (key, value) => use("put", readwrite, value, key),
-    remove: (key) => use("delete", readwrite, key)
+  return (() => new Promise((i, d) => {
+    a.onupgradeneeded = () => {
+      a[c].createObjectStore(t), i();
+    }, a[r] = () => d(a[s]);
+  }))(), {
+    get: (i) => l("get", "readonly", i),
+    set: (i, d) => l("put", e, d, i),
+    remove: (i) => l("delete", e, i)
   };
 };
 export {
-  addDaysTo,
-  clamp,
-  clonedDate,
-  createEl,
-  daysFrom,
-  deleteCookie,
-  firstDayOfMonth,
-  firstDayOfWeek,
-  fromToday,
-  get,
-  getCookie,
-  getDistance,
-  getListOfPaths,
-  getMonth,
-  getSelector,
-  getWeek,
-  loadJson,
-  loadText,
-  monthDays,
-  normalizeText,
-  platform,
-  range,
-  removeClass,
-  set,
-  setClass,
-  setCookie,
-  setStyle,
-  tinyIDB,
-  toCamel,
-  toKebab,
-  toPascal,
-  toProperName,
-  toSnake,
-  toSplit,
-  typeOf
+  p as addDaysTo,
+  Q as clamp,
+  y as clonedDate,
+  z as createEl,
+  D as daysFrom,
+  N as deleteCookie,
+  k as firstDayOfMonth,
+  $ as firstDayOfWeek,
+  h as fromToday,
+  V as get,
+  B as getCookie,
+  v as getDistance,
+  tt as getListOfPaths,
+  L as getMonth,
+  O as getSelector,
+  F as getWeek,
+  H as loadJson,
+  G as loadText,
+  C as monthDays,
+  x as normalizeText,
+  W as platform,
+  A as range,
+  U as removeClass,
+  X as set,
+  I as setClass,
+  E as setCookie,
+  q as setStyle,
+  et as tinyIDB,
+  Y as toCamel,
+  K as toKebab,
+  Z as toPascal,
+  R as toProperName,
+  J as toSnake,
+  w as toSplit,
+  M as typeOf
 };

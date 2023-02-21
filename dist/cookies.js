@@ -1,17 +1,13 @@
-const fromToday = (days) => {
-  const today = new Date();
-  today.setDate(today.getDate() + days);
-  return today;
-};
-const getCookie = (name) => document.cookie.split(";").map((pair) => pair.trim().split("=")).find(([key]) => key === name)?.[1];
-const setCookie = (name, value, expireDays) => {
-  document.cookie = `${name}=${value};${expireDays && ` expires=${fromToday(expireDays).toUTCString()};`}`;
-};
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; expires=${fromToday(-9).toUTCString()};`;
+const i = (t) => {
+  const o = new Date();
+  return o.setDate(o.getDate() + t), o;
+}, n = (t) => document.cookie.split(";").map((o) => o.trim().split("=")).find(([o]) => o === t)?.[1], c = (t, o, e) => {
+  document.cookie = `${t}=${o};${e && ` expires=${i(e).toUTCString()};`}`;
+}, s = (t) => {
+  document.cookie = `${t}=; expires=${i(-9).toUTCString()};`;
 };
 export {
-  deleteCookie,
-  getCookie,
-  setCookie
+  s as deleteCookie,
+  n as getCookie,
+  c as setCookie
 };

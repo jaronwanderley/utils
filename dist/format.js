@@ -1,18 +1,10 @@
-const normalizeText = (text) => text.normalize("NFD").replace(/[\u0300-\u036F]/g, "");
-const toSplit = (text) => text.replace(/[A-Z]/g, (char) => `_${char}`).replace(/[^\p{L}]/gu, "_").split("_").filter((e) => e);
-const baseFormat = (text) => toSplit(normalizeText(text)).map((word) => word.toLowerCase()).join("_");
-const joinFormat = (text, useStart = false) => (useStart ? "_" : "") + baseFormat(text).replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase());
-const toCamel = (text) => joinFormat(text);
-const toPascal = (text) => joinFormat(text, true);
-const toSnake = (text) => baseFormat(text);
-const toKebab = (text) => baseFormat(text).replaceAll("_", "-");
-const toProperName = (text) => toSplit(text).map((word) => word[0]?.toUpperCase() + word.slice(1)).join(" ");
+const l = (e) => e.normalize("NFD").replace(/[\u0300-\u036F]/g, ""), a = (e) => e.replace(/[A-Z]/g, (o) => `_${o}`).replace(/[^\p{L}]/gu, "_").split("_").filter((o) => o), t = (e) => a(l(e)).map((o) => o.toLowerCase()).join("_"), s = (e, o = !1) => (o ? "_" : "") + t(e).replace(/[^a-zA-Z0-9]+(.)/g, (p, c) => c.toUpperCase()), r = (e) => s(e), n = (e) => s(e, !0), i = (e) => t(e), m = (e) => t(e).replaceAll("_", "-"), _ = (e) => a(e).map((o) => o[0]?.toUpperCase() + o.slice(1)).join(" ");
 export {
-  normalizeText,
-  toCamel,
-  toKebab,
-  toPascal,
-  toProperName,
-  toSnake,
-  toSplit
+  l as normalizeText,
+  r as toCamel,
+  m as toKebab,
+  n as toPascal,
+  _ as toProperName,
+  i as toSnake,
+  a as toSplit
 };

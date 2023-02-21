@@ -1,20 +1,17 @@
-const loadText = async (path) => {
+const e = async (t) => {
   try {
-    const result = await fetch(path);
-    return await result.text();
-  } catch (error) {
+    return await (await fetch(t)).text();
+  } catch {
     return "";
   }
-};
-const loadJson = async (path) => {
+}, a = async (t) => {
   try {
-    const result = await fetch(path);
-    return await result.json();
-  } catch (error) {
+    return await (await fetch(t)).json();
+  } catch {
     return "";
   }
 };
 export {
-  loadJson,
-  loadText
+  a as loadJson,
+  e as loadText
 };

@@ -1,1 +1,1 @@
-var Math=function(e){"use strict";return e.clamp=(e,t,a)=>Math.min(Math.max(e,t),a),Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});
+var Math=function(e){"use strict";const t=(a,u,l)=>Math.min(Math.max(a,u),l);return e.clamp=t,Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});

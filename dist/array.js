@@ -1,4 +1,4 @@
-const range = (start = 0, end = 0, step = 1) => Array(Math.floor((end - start) / step + 1)).fill(0).map((_, index) => step * index + start);
+const n = (o = 0, a = 0, r = 1) => Array(Math.floor((a - o) / r + 1)).fill(0).map((f, l) => r * l + o);
 export {
-  range
+  n as range
 };

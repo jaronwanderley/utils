@@ -1,1 +1,1 @@
-var Geometry=function(e){"use strict";return e.getDistance=(e,t)=>{const r=t.x-e.x,n=t.y-e.y;return Math.sqrt(r*r+n*n)},Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});
+var Geometry=function(e){"use strict";const c=(t,n)=>{const r=n.x-t.x,u=n.y-t.y;return Math.sqrt(r*r+u*u)};return e.getDistance=c,Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});
