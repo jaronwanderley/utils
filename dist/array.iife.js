@@ -1,1 +1,1 @@
-var Array=function(e){"use strict";const l=(r=0,n=0,a=1)=>Array(Math.floor((n-r)/a+1)).fill(0).map((o,u)=>a*u+r);return e.range=l,Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});
+var Array=function(e){"use strict";const a=(n=0,u=0,r=1)=>{const{floor:l,abs:o}=Math;return r===0?[]:(r=(u<n?-1:1)*o(r),Array(l((u-n)/r)+1).fill(0).map((c,i)=>r*i+n))};return e.range=a,Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),e}({});
