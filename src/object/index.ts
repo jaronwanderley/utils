@@ -1,8 +1,8 @@
 import { typeOf } from '../dom'
 
-export const get = (path: string, obj: Window | Object = window) => path
+export const get = (path = '', obj: Window | Object = window) => path
   .split(/[\.\[\]]+/).filter(e => e !== '')
-  .reduce((prev: any, curr) => prev ? prev[parseInt(curr) ? parseInt(curr) : curr] : null, obj || self)
+  .reduce((prev: any, curr) => prev ? prev[parseInt(curr) ? parseInt(curr) : curr] : null, obj)
 
 export const set = (path: string, object: Window | Object = window, value: any) => {
   const parts = path.split(/[\]\[.]/).filter(string => !!string)
