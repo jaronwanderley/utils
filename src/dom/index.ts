@@ -16,7 +16,9 @@ export const setStyle = (element: HTMLElement, object: Object) => Object
   .entries(object)
   .map(([key, value]: [any, any]) => element.style[key] = value)
 
-export const getSelector = (element: HTMLElement): string => {
+export const getSelector = (element: HTMLElement): string | undefined => {
+  if (!element)
+    return
   const {
     tagName,
     id,
