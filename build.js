@@ -1,41 +1,25 @@
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import { copyFileSync, readdirSync } from 'fs'
 import { build } from 'vite'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const toPascalcase = text => ` ${text}`.toLowerCase()
+  .replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase())
 
-const libraries = [
-  {
-    name: 'Array',
-    entry: resolve(__dirname, './src/array/index.ts'),
-    fileName: 'array',
-  },
-  {
-    name: 'DOM',
-    entry: resolve(__dirname, './src/dom/index.ts'),
-    fileName: 'dom',
-  },
-  {
-    name: 'Geometry',
-    entry: resolve(__dirname, './src/geometry/index.ts'),
-    fileName: 'geometry',
-  },
-  {
-    name: 'Http',
-    entry: resolve(__dirname, './src/http/index.ts'),
-    fileName: 'http',
-  },
-  {
-    name: 'Math',
-    entry: resolve(__dirname, './src/math/index.ts'),
-    fileName: 'math',
-  },
-  {
-    name: 'Object',
-    entry: resolve(__dirname, './src/object/index.ts'),
-    fileName: 'object',
-  },
-]
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const path = relativePath => resolve(__dirname, relativePath)
+
+const getDirectories = source =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+const libraries = getDirectories(path('./src/'))
+  .map(name => ({
+    name: toPascalcase(name),
+    entry: path(`./src/${name}/index.ts`),
+    fileName: name,
+  }))
 
 libraries.forEach(async (lib) => {
   await build({
@@ -49,4 +33,17 @@ libraries.forEach(async (lib) => {
     },
   })
 })
+for (const library of libraries) {
+  await build({
+    build: {
+      outDir: './dist',
+      lib: {
+        ...library,
+        formats: ['es', 'umd', 'iife'],
+      },
+      emptyOutDir: false,
+    },
+  })
+}
 
+copyFileSync(path('./src/index.ts'), path('./dist/index.d.ts'))
