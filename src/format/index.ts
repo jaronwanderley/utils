@@ -11,7 +11,7 @@ export const toSplit = (text: string) => text
 const baseFormat = (text: string) => toSplit(normalizeText(text))
   .map(word => word.toLowerCase())
   .join('_')
-const joinFormat = (text: string, useStart = false) => (useStart ? '_' : '') + baseFormat(text)
+const joinFormat = (text: string, useStart = false) => ((useStart ? '_' : '') + baseFormat(text))
   .replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase())
 
 export const toCamel = (text: string) => joinFormat(text)
