@@ -21,22 +21,11 @@ const libraries = getDirectories(path('./src/'))
     fileName: name,
   }))
 
-libraries.forEach(async (lib) => {
-  await build({
-    build: {
-      outDir: './dist',
-      lib: {
-        ...lib,
-        formats: ['es', 'umd', 'iife'],
-      },
-      emptyOutDir: false,
-    },
-  })
-})
 for (const library of libraries) {
   await build({
     build: {
       outDir: './dist',
+      minify: true,
       lib: {
         ...library,
         formats: ['es', 'umd', 'iife'],
