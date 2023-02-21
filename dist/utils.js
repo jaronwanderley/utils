@@ -1,4 +1,28 @@
 const range = (start = 0, end = 0, step = 1) => Array(Math.floor((end - start) / step + 1)).fill(0).map((_, index) => step * index + start);
+const clonedDate = (date) => new Date(date.getTime());
+const addDaysTo = (date, days = 0) => {
+  const newDate = clonedDate(date);
+  newDate.setDate(date.getDate() + days);
+  return newDate;
+};
+const fromToday = (days) => {
+  const today = new Date();
+  today.setDate(today.getDate() + days);
+  return today;
+};
+const firstDayOfWeek = (date) => addDaysTo(date, -date.getDay());
+const firstDayOfMonth = (date) => addDaysTo(date, -date.getDate() + 1);
+const daysFrom = (date, days = 1) => Array(days).fill(0).map((_, i) => addDaysTo(clonedDate(date), i));
+const monthDays = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+const getWeek = (date) => daysFrom(firstDayOfWeek(date), 7);
+const getMonth = (date) => daysFrom(firstDayOfMonth(date), monthDays(date));
+const getCookie = (name) => document.cookie.split(";").map((pair) => pair.trim().split("=")).find(([key]) => key === name)?.[1];
+const setCookie = (name, value, expireDays) => {
+  document.cookie = `${name}=${value};${expireDays && ` expires=${fromToday(expireDays).toUTCString()};`}`;
+};
+const deleteCookie = (name) => {
+  document.cookie = `${name}=; expires=${fromToday(-9).toUTCString()};`;
+};
 const typeOf = (element) => typeof element == "object" && element != null ? element.constructor.name : {}.toString?.call(element)?.match(/\s(\w+)/)?.[1];
 const createEl = (type) => document.createElement(type);
 const setClass = (element, className) => className.split(" ").map((name) => element.classList.add(name));
@@ -30,6 +54,15 @@ const platform = () => {
     isLight: !isDark
   };
 };
+const normalizeText = (text) => text.normalize("NFD").replace(/[\u0300-\u036F]/g, "");
+const toSplit = (text) => text.replace(/[A-Z]/g, (char) => `_${char}`).replace(/[^\p{L}]/gu, "_").split("_").filter((e) => e);
+const baseFormat = (text) => toSplit(normalizeText(text)).map((word) => word.toLowerCase()).join("_");
+const joinFormat = (text, useStart = false) => (useStart ? "_" : "") + baseFormat(text).replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase());
+const toCamel = (text) => joinFormat(text);
+const toPascal = (text) => joinFormat(text, true);
+const toSnake = (text) => baseFormat(text);
+const toKebab = (text) => baseFormat(text).replaceAll("_", "-");
+const toProperName = (text) => toSplit(text).map((word) => word[0]?.toUpperCase() + word.slice(1)).join(" ");
 const getDistance = (p1, p2) => {
   const x = p2.x - p1.x;
   const y = p2.y - p1.y;
@@ -71,20 +104,74 @@ const getListOfPaths = (obj = {}) => {
   };
   return paths(obj);
 };
+const tinyIDB = () => {
+  const myStore = "myStore";
+  const readwrite = "readwrite";
+  const on = "on";
+  const onSuccess = `${on}success`;
+  const error = "error";
+  const onError = on + error;
+  const result = "result";
+  const loadingDB = indexedDB.open(location.origin);
+  const use = (method, type, ...rest) => new Promise((resolve, reject) => {
+    loadingDB[onSuccess] = () => {
+      const database = loadingDB[result];
+      const transaction = database.transaction(myStore, type);
+      const store = transaction.objectStore(myStore);
+      const useRequest = store[method](...rest);
+      useRequest[onSuccess] = () => method === "get" ? resolve(useRequest[result]) : resolve();
+      useRequest[onError] = () => reject(useRequest[error]);
+    };
+    loadingDB[onError] = () => reject(loadingDB[error]);
+  });
+  const initialize = () => new Promise((resolve, reject) => {
+    loadingDB.onupgradeneeded = () => {
+      loadingDB[result].createObjectStore(myStore);
+      resolve();
+    };
+    loadingDB[onError] = () => reject(loadingDB[error]);
+  });
+  initialize();
+  return {
+    get: (key) => use("get", "readonly", key),
+    set: (key, value) => use("put", readwrite, value, key),
+    remove: (key) => use("delete", readwrite, key)
+  };
+};
 export {
+  addDaysTo,
   clamp,
+  clonedDate,
   createEl,
+  daysFrom,
+  deleteCookie,
+  firstDayOfMonth,
+  firstDayOfWeek,
+  fromToday,
   get,
+  getCookie,
   getDistance,
   getListOfPaths,
+  getMonth,
   getSelector,
+  getWeek,
   loadJson,
   loadText,
+  monthDays,
+  normalizeText,
   platform,
   range,
   removeClass,
   set,
   setClass,
+  setCookie,
   setStyle,
+  tinyIDB,
+  toCamel,
+  toKebab,
+  toPascal,
+  toProperName,
+  toSnake,
+  toSplit,
   typeOf
 };

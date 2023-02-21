@@ -1,0 +1,9 @@
+export declare const clonedDate: (date: Date) => Date;
+export declare const addDaysTo: (date: Date, days?: number) => Date;
+export declare const fromToday: (days: number) => Date;
+export declare const firstDayOfWeek: (date: Date) => Date;
+export declare const firstDayOfMonth: (date: Date) => Date;
+export declare const daysFrom: (date: Date, days?: number) => Date[];
+export declare const monthDays: (date: Date) => number;
+export declare const getWeek: (date: Date) => Date[];
+export declare const getMonth: (date: Date) => Date[];
