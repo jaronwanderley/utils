@@ -30,8 +30,8 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      reporter: ['text', 'html', 'json-summary'],
-      reportsDirectory: './docs/test',
+      reporter: ['text', 'json-summary'],
+      reportsDirectory: './test-coverage',
     },
   },
   plugins: [dts()],
